@@ -1,22 +1,20 @@
 import os
 from pathlib import Path
 
-
 def filter_photos_in_directory(dir_string:'str')->'[str]':
-
-    jpg_types = {'jpg', 'jpeg'}
-
-    filtered = list()
 
     dir = os.listdir(dir_string)
 
-    for d in dir:
-        sp = d.split('.')
-        
-        if sp[-1].lower() in jpg_types:
-            filtered.append('.'.join(sp))
+    return [file for file in dir if is_jpg(file)]
 
-    return filtered
+
+def is_jpg(file_name: 'str')->bool:
+    jpg_types = ('.jpg', '.jpeg')
+
+    if file_name.lower().endswith(jpg_types):
+        return True
+    else:
+        return False
 
 
 def print_each(lst):
@@ -24,39 +22,74 @@ def print_each(lst):
         print('Item #{}: '.format(i+1) + v)
 
 
-# institute-eventname_IMG#_photographer
+# format : institute-eventname_IMG#_photographer
 # example: CHCMP-HCFC_001_BobPeterson
+
 def rename(institute, event_name, photographer, root, filtered_photos):
 
-    print('\nStarting to rename...')
+    print('\nStarting to rename photos...')
 
-    renamed_folder_path = os.path.join(root, 'Renamed')
+    renamed_folder_path = os.path.join(root, 'Renamed Photos')
 
     if not os.path.isdir(renamed_folder_path):
         os.makedirs(renamed_folder_path)
 
-    for i, old_name in enumerate(filtered_photos):
+    for index, old_name in enumerate(filtered_photos):
 
-        sequence = i+1
+        sequence = index + 1
         
         new_name = '{}-{}_#{}_{}.JPG'.format(institute, event_name, sequence, photographer)
 
-        print('Renaming Item #{}: {}'.format(sequence, old_name), 'to', new_name)
-        
-        os.rename(os.path.join(root, old_name), os.path.join(renamed_folder_path, new_name))
+        new_name_path = os.path.join(renamed_folder_path, new_name)
+
+        if not os.path.exists(new_name_path):
+            print('Renaming Item #{}: {}'.format(sequence, old_name), 'to', new_name)
+            
+            os.rename(os.path.join(root, old_name), new_name_path)
+
+    print('\nBatch Renaming Finished')
+    print('PROGRAM EXITED')
+
+
+def print_welcome_message():
+    print("---------------------------------------------------------------------------------")
+    print('Welcome to Renamer by Shengyuan Lu')
+    print('A Tool To Batch Rename Photos According to UCI Merage Marketing Team\'s Standards')
+    print("---------------------------------------------------------------------------------\n")
+
+
+def ask_for_inp():
+
+    print()
+    
+    institue = str(input('What\'s the name of the institute? (Default: CIWM) : ') or 'CIWM')
+    print('Institute Name:', institue)
+    
+    event = str(input('What\'s the name of the event? (Default: LIFEvest) : ') or 'LIFEvest')
+    print('Event Name:', event)
+    
+    photographer = str(input('What\'s the name of the photographer? (Default: Shengyuan) : ') or 'Shengyuan')
+    print('Photographer Name:', photographer)
+    
+    return (institue, event, photographer)
     
 
 def run():
-    
+    print_welcome_message()
+
     root = os.path.join(Path.home(), 'Downloads')
 
     filtered_photos = filter_photos_in_directory(root)
+
+    if len(filtered_photos) == 0:
+        print('No photos detected in the directory {}'.format(root))
+        print('PROGRAM EXITED')
+        return
 
     print('Photos Found In Directory {}:'.format(root))
 
     print_each(filtered_photos)
 
-    rename('CIWM', 'LIFEvest', 'Shengyuan', root, filtered_photos)
+    institute, event, photographer = ask_for_inp()
 
-    print()
-    print('Batch Renaming Finished')
+    rename(institute, event, photographer, root, filtered_photos)
