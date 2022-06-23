@@ -38,7 +38,7 @@ def rename(institute, event_name, photographer, root, filtered_photos):
 
         sequence = index + 1
         
-        new_name = '{}-{}_#{}_{}.JPG'.format(institute, event_name, sequence, photographer)
+        new_name = '{}-{}_{}_{}.JPG'.format(institute, event_name, sequence, photographer)
 
         new_name_path = os.path.join(renamed_folder_path, new_name)
 
