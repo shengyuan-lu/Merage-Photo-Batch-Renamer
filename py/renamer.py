@@ -27,7 +27,7 @@ def print_each(lst):
 
 def rename(institute, event_name, photographer, root, filtered_photos):
 
-    print('\nStarting to rename photos...')
+    print('Starting to rename photos...')
 
     renamed_folder_path = os.path.join(root, 'Renamed Photos')
 
@@ -63,13 +63,13 @@ def ask_for_inp():
     print()
     
     institue = str(input('What\'s the name of the institute? (Default: CIWM) : ') or 'CIWM')
-    print('Institute Name:', institue)
+    print('Institute Name:', institue, '\n')
     
     event = str(input('What\'s the name of the event? (Default: LIFEvest) : ') or 'LIFEvest')
-    print('Event Name:', event)
+    print('Event Name:', event, '\n')
     
     photographer = str(input('What\'s the name of the photographer? (Default: Shengyuan) : ') or 'Shengyuan')
-    print('Photographer Name:', photographer)
+    print('Photographer Name:', photographer, '\n')
     
     return (institue, event, photographer)
     
