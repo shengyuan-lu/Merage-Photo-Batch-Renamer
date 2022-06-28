@@ -113,7 +113,7 @@ def run():
 
     root = os.path.join(Path.home(), 'Downloads')
 
-    photos_to_be_renamed = find_photos_in_directory(root)
+    photos_to_be_renamed = sorted(find_photos_in_directory(root))
 
     if len(photos_to_be_renamed) == 0:
         print('No photos detected in the directory {}'.format(root))
