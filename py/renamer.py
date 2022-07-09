@@ -111,7 +111,7 @@ def ask_for_inp():
 def run():
     print_welcome_message()
 
-    root = os.path.join(Path.home(), 'Downloads')
+    root = os.path.join(Path.home(), 'Downloads','rename')
 
     photos_to_be_renamed = sorted(find_photos_in_directory(root))
 
